@@ -4,8 +4,11 @@ namespace MyMud
 {
     internal class Player
     {
-        internal int playerMoney;
-        public List<CoinInfo> playerCoins = new List<CoinInfo>();
+        
+        internal int playerMoney; // 플레이어의 돈
+        int playerTotalMoney; // 플레이어의 코인 수익(코인 가격 * 수량) + 돈
+        public List<Inventory> playerCoins = new List<Inventory>(); // 플레이어의 인벤토리
+        
 
         public Player(int v)
         {
@@ -18,5 +21,6 @@ namespace MyMud
             string playerInfo = $"플레이어의 금액 : {playerMoney}";
             return playerInfo;
         }
+        
     }
 }
