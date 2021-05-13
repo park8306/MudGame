@@ -4,7 +4,7 @@
     {
 
         public CoinInfo playerCoinInfo;
-        public int CoinCount;
+        public int InventoryCoinCount;
 
         public Inventory()
         {
@@ -14,7 +14,7 @@
         public Inventory(CoinInfo playerCoinInfo, int CoinCount)
         {
             this.playerCoinInfo = playerCoinInfo;
-            this.CoinCount = CoinCount;
+            this.InventoryCoinCount = CoinCount;
         }
 
     }
