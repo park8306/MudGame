@@ -13,7 +13,7 @@ namespace MyMud
             //Console.SetWindowSize(40, 20);
             StartScreen();
             // 유저 생성
-            // 기본 금액을 10만원으로 결정
+            // 기본 금액을 1만원으로 결정
             Player player = new Player(10000);
 
             // 코인에 들어가야할 정보
@@ -23,8 +23,8 @@ namespace MyMud
             // 처음의 배율은 0으로 정해준다. 나중에 랜덤으로 지정해줄 예정
 
             List<CoinInfo> coins = new List<CoinInfo> {
-                new CoinInfo("1", "도장코인", 100.0f, 0.0f),
-                new CoinInfo("2", "미로코인", 150.0f, 0.0f),
+                new CoinInfo("1", "미더리움", 100.0f, 0.0f),
+                new CoinInfo("2", "미러코인", 150.0f, 0.0f),
                 new CoinInfo("3", "러플코인", 300.0f, 0.0f),
                 new CoinInfo("4", "실라코인", 1000.0f, 0.0f)
             };
@@ -39,10 +39,12 @@ namespace MyMud
             while (isContinue)
             {
                 Console.Clear();
-                Print("사용할 메뉴를 선택해주세요!");
+                Print("-----------------------------------------------");
                 Print("1. 코인시장확인");
                 Print("2. 다음날로 넘어가기 (코인의 값이 변합니다)");
                 Print("3. 게임 종료!");
+                Console.Write("번호를 선택해주세요 : ");
+                
                 // 메뉴 번호 선택을 받음
                 selectedMenu = Console.ReadLine();
                 // 세부메뉴
@@ -64,20 +66,24 @@ namespace MyMud
                             Print("\n");
                             // 플레이어 정보
                             Print(player.ToString());
-                            Print("\n");
-
+                            float totalMoney = 0;
                             // 만약 코인을 가지고 있다면 출력
-                            if (player.playerCoins != null)
+                            if (player.isPlayerCoin)
                             {
                                 for (int i = 0; i < player.playerCoins.Count; i++)
                                 {
                                     Print($"보유한 코인 : {player.playerCoins[i].playerCoinInfo.CoinName} X {player.playerCoins[i].InventoryCoinCount} ");
+                                    totalMoney += player.playerCoins[i].playerCoinInfo.CoinPrice * player.playerCoins[i].InventoryCoinCount;
                                 }
-                                //foreach (Inventory item in player.playerCoins)
-                                //{
-                                //    Print($"보유한 코인 : {item.playerCoinInfo.CoinName} X {item.CoinCount} ");
-                                //}
+                                totalMoney += player.playerMoney;
                             }
+                            else
+                            {
+                                totalMoney = player.playerMoney;
+                                Print("아직 보유한 코인이 없습니다!");
+                            }
+
+                            Print($"플레이어의 총 재산: {totalMoney}");
                             Print("\n");
 
                             // 메뉴 정보
@@ -103,6 +109,7 @@ namespace MyMud
                                 {
                                     player.playerMoney -= price;
                                     player.playerCoins.Add(new Inventory(coins[indexNumber], Count));
+                                    player.isPlayerCoin = true;
                                 }
                                 else
                                 {
@@ -125,7 +132,7 @@ namespace MyMud
                                     // 보유한 코인의 정보를 보여줌
                                     for (int i = 0; i < player.playerCoins.Count; i++)
                                     {
-                                        Print($"보유한 코인 {player.playerCoins[i].playerCoinInfo.CoinNumber} : {player.playerCoins[i].playerCoinInfo.CoinName} X {player.playerCoins[i].InventoryCoinCount} ");
+                                        Print($"보유한 코인 {i} : {player.playerCoins[i].playerCoinInfo.CoinName} X {player.playerCoins[i].InventoryCoinCount} ");
                                     }
 
                                     Console.Write("판매할 코인의 번호를 입력해주세요 : ");
@@ -151,6 +158,10 @@ namespace MyMud
                                                 player.playerCoins[i].playerCoinInfo.CoinNumber = (i + 1).ToString();
                                             }
                                         }
+                                    }
+                                    if (player.playerCoins.Count == 0)
+                                    {
+                                        player.isPlayerCoin = false;
                                     }
                                 }
                                 //else
@@ -178,18 +189,44 @@ namespace MyMud
                         // 코인 배율을 랜덤으로 변경해준다.
                         foreach (var item in coins)
                         {
-                            double randomRate = new Random().NextDouble();
-                            float a = (float)randomRate;
+                            
+                            float a;
                             int b = new Random().Next(1, 11);
-                            if(b <= 5)
+                            int c = new Random().Next(0, 2);
+                            a = b / 10.0f;
+                            if (b <= 3)
                             {
-                                item.CoinPrice += item.CoinPrice * a;
-                                item.CoinPercent = a;
+                                if(c == 0)
+                                {
+                                    
+                                    item.CoinPrice += item.CoinPrice * a;
+                                    item.CoinPercent = a;
+                                }
+                                else if(c == 1)
+                                {
+                                    
+                                    item.CoinPrice -= item.CoinPrice * a;
+                                    item.CoinPercent = a;
+                                }
+                            }
+                            else if(b == 7 || b==8) // 70~80로 크게 떨어지는 확률은 20퍼
+                            {
+                                if (c == 0)
+                                {
+
+                                    item.CoinPrice += item.CoinPrice * a;
+                                    item.CoinPercent = a;
+                                }
+                                else if (c == 1)
+                                {
+
+                                    item.CoinPrice -= item.CoinPrice * a;
+                                    item.CoinPercent = a;
+                                }
                             }
                             else
                             {
-                                item.CoinPrice -= item.CoinPrice * a;
-                                item.CoinPercent = a;
+                                item.CoinPercent = 0;
                             }
                             
                         }
