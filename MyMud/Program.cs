@@ -14,7 +14,7 @@ namespace MyMud
             StartScreen();
             // 유저 생성
             // 기본 금액을 1만원으로 결정
-            Player player = new Player(10000);
+            Player player = new Player(100000);
 
             // 코인에 들어가야할 정보
             // 코인의 이름
@@ -23,10 +23,10 @@ namespace MyMud
             // 처음의 배율은 0으로 정해준다. 나중에 랜덤으로 지정해줄 예정
 
             List<CoinInfo> coins = new List<CoinInfo> {
-                new CoinInfo("1", "미더리움", 100.0f, 0.0f),
-                new CoinInfo("2", "미러코인", 150.0f, 0.0f),
-                new CoinInfo("3", "러플코인", 300.0f, 0.0f),
-                new CoinInfo("4", "실라코인", 1000.0f, 0.0f)
+                new CoinInfo("1", "미더리움", 1000.0f, 0.0f),
+                new CoinInfo("2", "미러코인", 1500.0f, 0.0f),
+                new CoinInfo("3", "러플코인", 3000.0f, 0.0f),
+                new CoinInfo("4", "실라코인", 1200.0f, 0.0f)
             };
 
             // 게임이 반복되는 부분
@@ -72,7 +72,7 @@ namespace MyMud
                             {
                                 for (int i = 0; i < player.playerCoins.Count; i++)
                                 {
-                                    Print($"보유한 코인 : {player.playerCoins[i].playerCoinInfo.CoinName} X {player.playerCoins[i].InventoryCoinCount} ");
+                                    Print($"\n보유한 코인 : {player.playerCoins[i].playerCoinInfo.CoinName} X {player.playerCoins[i].InventoryCoinCount} ");
                                     totalMoney += player.playerCoins[i].playerCoinInfo.CoinPrice * player.playerCoins[i].InventoryCoinCount;
                                 }
                                 totalMoney += player.playerMoney;
@@ -80,10 +80,10 @@ namespace MyMud
                             else
                             {
                                 totalMoney = player.playerMoney;
-                                Print("아직 보유한 코인이 없습니다!");
+                                Print("\n아직 보유한 코인이 없습니다!");
                             }
 
-                            Print($"플레이어의 총 재산: {totalMoney}");
+                            Print($"\n플레이어의 총 재산: {totalMoney}");
                             Print("\n");
 
                             // 메뉴 정보
@@ -99,23 +99,32 @@ namespace MyMud
                                 indexNumber = int.Parse(selectedMenu) - 1;
                                 selectedMenu = "";
 
-                                Console.Write("구입할 코인의 갯수를 입력해주세요 : ");
+                                Console.Write("\n구입할 코인의 갯수를 입력해주세요 : ");
                                 selectedMenu = Console.ReadLine();
                                 Count = int.Parse(selectedMenu);
                                 // 플레이어가 고른 코인의 정보를 넣어준다.
                                 float price = coins[indexNumber].CoinPrice * Count;
                                 // 만약 플레이어머니 > (해당 코인 * 수량) 라면 코인을 산다.
-                                if (player.playerMoney >= price)
+                                Print($"\n{coins[indexNumber].CoinName} X {Count}의 가격은 {price}입니다.\n");
+                                Console.Write("구입하시겠습니까? 구입하려면 y키를 눌러주세요 : ");
+                                selectedMenu = Console.ReadLine();
+                                if(selectedMenu.ToLower() == "y")
                                 {
-                                    player.playerMoney -= price;
-                                    player.playerCoins.Add(new Inventory(coins[indexNumber], Count));
-                                    player.isPlayerCoin = true;
-                                }
-                                else
-                                {
-                                    Print("소지금이 부족하여 코인을 구입할 수 없습니다!");
-                                    Print("아무키나 눌러주세요!");
-                                    Console.ReadKey(true);
+                                    if (player.playerMoney >= price)
+                                    {
+                                        player.playerMoney -= price;
+                                        player.playerCoins.Add(new Inventory(coins[indexNumber], Count));
+                                        player.isPlayerCoin = true;
+                                        Print("\n구입되었습니다!");
+                                        Print("\n아무키나 눌러주세요!");
+                                        Console.ReadKey(true);
+                                    }
+                                    else
+                                    {
+                                        Print("소지금이 부족하여 코인을 구입할 수 없습니다!");
+                                        Print("아무키나 눌러주세요!");
+                                        Console.ReadKey(true);
+                                    }
                                 }
 
                                 selectedMenu = "";
@@ -132,7 +141,7 @@ namespace MyMud
                                     // 보유한 코인의 정보를 보여줌
                                     for (int i = 0; i < player.playerCoins.Count; i++)
                                     {
-                                        Print($"보유한 코인 {i} : {player.playerCoins[i].playerCoinInfo.CoinName} X {player.playerCoins[i].InventoryCoinCount} ");
+                                        Print($"보유한 코인 {i+1} : {player.playerCoins[i].playerCoinInfo.CoinName} X {player.playerCoins[i].InventoryCoinCount} ");
                                     }
 
                                     Console.Write("판매할 코인의 번호를 입력해주세요 : ");
@@ -200,13 +209,11 @@ namespace MyMud
                                 {
                                     
                                     item.CoinPrice += item.CoinPrice * a;
-                                    item.CoinPercent = a;
                                 }
                                 else if(c == 1)
                                 {
                                     
                                     item.CoinPrice -= item.CoinPrice * a;
-                                    item.CoinPercent = a;
                                 }
                             }
                             else if(b == 7 || b==8) // 70~80로 크게 떨어지는 확률은 20퍼
@@ -215,18 +222,16 @@ namespace MyMud
                                 {
 
                                     item.CoinPrice += item.CoinPrice * a;
-                                    item.CoinPercent = a;
                                 }
                                 else if (c == 1)
                                 {
 
                                     item.CoinPrice -= item.CoinPrice * a;
-                                    item.CoinPercent = a;
                                 }
                             }
                             else
                             {
-                                item.CoinPercent = 0;
+                                item.CoinPrice += 100;
                             }
                             
                         }
