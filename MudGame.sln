@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MudGame", "MudGame\MudGame.csproj", "{B81A77C9-A3A6-4015-9B69-6D87313F51F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMud", "MyMud\MyMud.csproj", "{40F2D935-B76E-46ED-A362-F6F3765A8E97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyMud", "MyMud\MyMud.csproj", "{40F2D935-B76E-46ED-A362-F6F3765A8E97}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sort", "Sort\Sort.csproj", "{6C707149-4334-496A-B8C8-C9BCDC8A24F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{40F2D935-B76E-46ED-A362-F6F3765A8E97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40F2D935-B76E-46ED-A362-F6F3765A8E97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40F2D935-B76E-46ED-A362-F6F3765A8E97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C707149-4334-496A-B8C8-C9BCDC8A24F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C707149-4334-496A-B8C8-C9BCDC8A24F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C707149-4334-496A-B8C8-C9BCDC8A24F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C707149-4334-496A-B8C8-C9BCDC8A24F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
